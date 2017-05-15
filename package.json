@@ -24,6 +24,6 @@
     "browservefy": "0.0.0"
   },
   "scripts": {
-    "start": "echo \"open localhost:8080/\" && cd demo && ../node_modules/.bin/browservefy demo.js 8080 -- -d"
+    "start": "echo \"open http://localhost:8080/\" && cd demo && ../node_modules/.bin/browservefy demo.js 8080 -- -d"
   }
 }

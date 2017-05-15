@@ -16,15 +16,19 @@ window.game = createGame({
   worldOrigin: [0,0,0]
 })
 
-var maxogden = skin(game.THREE, 'maxogden.png').createPlayerObject()
-maxogden.position.set(0, 62, 20)
-game.scene.add(maxogden)
+var maxogden = skin(game.THREE, 'maxogden.png').createPlayerObject();
+maxogden.position.set(0, 62, 20);
+game.scene.add(maxogden);
 
-var substack = skin(game.THREE, 'substack.png').createPlayerObject()
-substack.position.set(0, 62, -20)
-game.scene.add(substack)
+var substack = skin(game.THREE, 'substack.png').createPlayerObject();
+substack.position.set(0, 62, -20);
+game.scene.add(substack);
 
-var currentMaterial = 1
+var martindale = skin(game.THREE, 'martindale.png').createPlayerObject();
+martindale.position.set(-20, 62, 0);
+game.scene.add(martindale);
+
+var currentMaterial = 1;
 
 blockSelector.on('select', function(material) {
   var idx = game.materials.indexOf(material)
