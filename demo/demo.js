@@ -12,7 +12,7 @@ window.game = createGame({
   cubeSize: 25,
   chunkSize: 32,
   chunkDistance: 2,
-  startingPosition: [35, 350, 35],
+  startingPosition: [35, 64, 35],
   worldOrigin: [0,0,0]
 })
 
@@ -29,6 +29,9 @@ martindale.position.set(-20, 62, 0);
 game.scene.add(martindale);
 
 var currentMaterial = 1;
+var tally = document.querySelector('.tally .count')
+var erase = true
+var container = document.querySelector('#container');
 
 blockSelector.on('select', function(material) {
   var idx = game.materials.indexOf(material)
@@ -44,6 +47,34 @@ game.on('collision', function (item) {
   incrementBlockTally()
   game.removeItem(item)
 })
+
+game.appendTo('#container')
+
+game.on('mousedown', function (pos) {
+  var cid = game.voxels.chunkAtPosition(pos)
+  var vid = game.voxels.voxelAtPosition(pos)
+  if (erase) {
+    explode(pos, game.getBlock(pos))
+    game.setBlock(pos, 0)
+  } else {
+    game.createBlock(pos, currentMaterial)
+  }
+});
+
+container.addEventListener('click', handleClick);
+
+window.addEventListener('keyup', ctrlToggle)
+window.addEventListener('keydown', ctrlToggle)
+
+function handleClick () {
+  game.requestPointerLock(container);
+}
+
+function incrementBlockTally() {
+  var c = +tally.innerText
+  ++c
+  tally.innerText = c
+}
 
 function createDebris (pos, value) {
   var mesh = new THREE.Mesh(
@@ -78,39 +109,3 @@ function explode (pos, value) {
     game.removeItem(item)
   }, 15 * 1000 + Math.random() * 15 * 1000, item)
 }
-
-game.appendTo('#container')
-
-var tally = document.querySelector('.tally .count')
-function incrementBlockTally() {
-  var c = +tally.innerText
-  ++c
-  tally.innerText = c
-}
-
-game.on('mousedown', function (pos) {
-  var cid = game.voxels.chunkAtPosition(pos)
-  var vid = game.voxels.voxelAtPosition(pos)
-  if (erase) {
-    explode(pos, game.getBlock(pos))
-    game.setBlock(pos, 0)
-  } else {
-    game.createBlock(pos, currentMaterial)
-  }
-})
-
-var erase = true
-window.addEventListener('keydown', function (ev) {
-  if (ev.keyCode === 'X'.charCodeAt(0)) {
-    erase = !erase
-  }
-})
-
-function ctrlToggle (ev) { erase = !ev.ctrlKey }
-window.addEventListener('keyup', ctrlToggle)
-window.addEventListener('keydown', ctrlToggle)
-
-var container = document.querySelector('#container')
-container.addEventListener('click', function() {
-  game.requestPointerLock(container)
-})
